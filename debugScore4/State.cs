@@ -9,7 +9,6 @@ namespace debugScore4
     class State
     {
         private int player;
-        //git test
         private int[,] Cells; //TODO explain used values 0,1,2
         private string[,] CellsNames; //TODO ...
         private int score;
@@ -76,20 +75,18 @@ namespace debugScore4
             }
             return pushDone;
         }
-
         //Access Modifiers; Setters and Getters
         public int getPlayer ()
         {
             return player;
         } 
-
+        //
         public void setPlayer(int player)
         {
             this.player = player;
         }
-
         //
-        public bool isTerminal() //default is connect4; parameter used inside heuristic for evaluating 2 and 3 in a row "situations"
+        public bool isTerminal()
         {
             //Horizontal checking
             int count = 1; int i, j;
@@ -174,45 +171,36 @@ namespace debugScore4
             }
             return false;
         }
-        //
+        /// <summary>
+        /// all the methods i need for calculating the score of each state
+        /// </summary>
         public void heuristic()
         {
-            //Empty cells for future improvement
-            int emptySquareCount = 0;
-            //Rows
+            
+        }
+        public int rowScore()
+        {
             int horizontalCount = 1;
+            int sum = 0; 
             for (int i = 0; i < ROWS_NUM; i++)
             {
                 for (int j = 0; j < COLS_NUM - 1; j++)
                 {
-                    //empty cells for future improvement
-                    if (Cells[i, j] == 0)
-                    {
-                        emptySquareCount++;
-                        continue;
-                    }
-                    //Rows
                     if (Cells[i, j] == Cells[i, j + 1])
                     {
                         horizontalCount++;
-                        //set score
                         if (horizontalCount == 3)
-                        {
                             score += 10;
-                        }
                         else if (horizontalCount == 4)
-                        {
-                            score += 90;    //100-10. if we add 100, score will be 110...
-                        }
-
+                            score += 90;    
                     }
                     else
-                    {
                         horizontalCount = 1;
-                    }
                 }
             }
-            //Cols
+        }
+        public int colScore()
+        {
             int verticalCount = 1;
             for (int j = 0; j < COLS_NUM; j++)
             {
@@ -222,69 +210,28 @@ namespace debugScore4
                     {
                         continue;
                     }
-                    //Cols
                     if (Cells[i, j] == Cells[i + 1, j])
                     {
                         verticalCount++;
-                        //set score
                         if (verticalCount == 3)
-                        {
                             score += 10;
-                        }
                         else if (verticalCount == 4)
-                        {
-                            score += 90;    //100-10. if we add 100, score will be 110...
-                        }
-
+                            score += 90;
                     }
                     else
-                    {
                         verticalCount = 1;
-                    }
                 }
             }
-            //Main diagonal
-            int mainDiagonalCount = 1;
-            for ( int i = ROWS_NUM - 4, j =0 ; i < ROWS_NUM -1 && j < COLS_NUM - 1; i++, j++)
-            {
-               
-                if (Cells[i, j] == 0)
-                {
-                    Console.WriteLine("koko");
-                    Console.WriteLine("Comparing cells:" + i + ", " + j);
-                    continue;
-                }
-                if (i == COLS_NUM - 3 && j == 0)
-                {
-                    Console.WriteLine("lala");
-                    break;
-                }
-                    
-                Console.WriteLine("Comparing cells:" + i + ", " + j);
-                if (Cells[i, j] == Cells[i + 1, j + 1])
-                {
-                    mainDiagonalCount++;
-                    //set score
-                    if (mainDiagonalCount == 3)
-                    {
-                        score += 10;
-                    }
-                    else if (mainDiagonalCount == 4)
-                    {
-                        score += 90;    //100-10. if we add 100, score will be 110...
-                    }
-
-                }
-                else
-                {
-                    mainDiagonalCount = 1;
-                }
-            }
-            Console.WriteLine("score: " + score);
-
         }
-
-
+        public int mainDScore()
+        {
+            return 0; 
+        }
+        public int secondaryDScore()
+        {
+            return 0; 
+        }
+        //
         public List<State> GetChildren()
         {
             int nextPlayer;
@@ -333,7 +280,6 @@ namespace debugScore4
             return children;
         }
         //
-        
         public void toGraph()
         {
             for (int i = 0; i < ROWS_NUM; i++)//row
@@ -377,7 +323,6 @@ namespace debugScore4
         //{
         //    return this.emptyTileRow + this.emptyTileColumn + this.dimension;
         //}
-
         //@Override
         ////We override the compareTo function of this class so only the heuristic scores are compared
         //public int compareTo(State s)
