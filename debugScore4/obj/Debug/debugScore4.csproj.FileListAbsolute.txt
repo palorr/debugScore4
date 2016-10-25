@@ -7,3 +7,9 @@ C:\Users\pc\Google Drive\aueb 7th semester\τεχνητη νοημοσυνη\ε�
 C:\Users\pc\Desktop\debugScore4\debugScore4\bin\Debug\debugScore4.exe.config
 C:\Users\pc\Desktop\debugScore4\debugScore4\obj\Debug\debugScore4.exe
 C:\Users\pc\Desktop\debugScore4\debugScore4\obj\Debug\debugScore4.pdb
+C:\Users\archo\Desktop\debugScore4\debugScore4\bin\Debug\debugScore4.exe.config
+C:\Users\archo\Desktop\debugScore4\debugScore4\obj\Debug\debugScore4.exe
+C:\Users\archo\Desktop\debugScore4\debugScore4\obj\Debug\debugScore4.pdb
+C:\Users\archo\Desktop\debugScore4\debugScore4\bin\Debug\debugScore4.exe
+C:\Users\archo\Desktop\debugScore4\debugScore4\bin\Debug\debugScore4.pdb
+C:\Users\archo\Desktop\debugScore4\debugScore4\obj\Debug\debugScore4.csprojResolveAssemblyReference.cache
