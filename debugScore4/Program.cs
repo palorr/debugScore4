@@ -10,9 +10,6 @@ namespace debugScore4
     {
         static void Main(string[] args)
         {
-
-            //eimaste ok me ta paidia 
-            //den eimaste ok me to score 
             State s = new State(1);
             s.toGraph();
             s.push(0, 1);
@@ -21,43 +18,70 @@ namespace debugScore4
             s.toGraph();
             s.push(1, 1);
             s.toGraph();
+            s.push(1, 2);
+            s.toGraph();
+            s.push(0, 1);
+            s.toGraph();
+            s.push(2, 2);
+            s.toGraph();
+            s.push(0, 1);
+            s.toGraph();
+            s.push(0, 1);
+            s.toGraph();
+            s.push(2, 2);
+            s.toGraph();
+            s.push(2, 2);
+            s.toGraph();
+            s.push(3, 2);
+            s.toGraph();
             s.push(1, 1);
             s.toGraph();
             s.push(2, 1);
             s.toGraph();
-            s.push(2, 1);
-            s.toGraph();
-            s.push(2, 2);
-            s.toGraph();
-            s.push(2, 1);
-            s.toGraph();
-            s.push(3, 2);
-            s.toGraph();
-            s.push(3, 2);
-            s.toGraph();
-            s.push(3, 2);
+            s.push(4, 2);
             s.toGraph();
             s.push(3, 1);
             s.toGraph();
+            s.push(3, 2);
+            s.toGraph();
+            s.push(4, 1);
+            s.toGraph();
+            s.push(4, 1);
+            s.toGraph();
             s.push(4, 2);
             s.toGraph();
-            s.push(4, 1);
-            s.toGraph();
-            s.push(4, 1);
-            s.toGraph();
-            s.push(5, 1);
-            s.toGraph();
-            s.push(5, 1);
-            s.toGraph();
-            s.push(5, 1);
-            s.toGraph();
-            s.push(5, 2);
-            Console.WriteLine(s.isTerminal());
+            s.heuristic();
+            
 
-            s.toGraph();
-            s.push(6, 1);
-            Console.WriteLine(s.isTerminal());
-            s.toGraph();
+            //s.push(2, 1);
+            //s.toGraph();
+            //s.push(3, 2);
+            //s.toGraph();
+            //s.push(3, 2);
+            //s.toGraph();
+            //s.push(3, 2);
+            //s.toGraph();
+            //s.push(3, 1);
+            //s.toGraph();
+            //s.push(4, 2);
+            //s.toGraph();
+            //s.push(4, 1);
+            //s.toGraph();
+            //s.push(4, 1);
+            //s.toGraph();
+            //s.push(5, 1);
+            //s.toGraph();
+            //s.push(5, 1);
+            //s.toGraph();
+            //s.push(5, 1);
+            //s.toGraph();
+            //s.push(5, 2);
+            //Console.WriteLine(s.isTerminal());
+
+            //s.toGraph();
+            //s.push(6, 1);
+            //Console.WriteLine(s.isTerminal());
+            //s.toGraph();
             //
             Console.Read();
         }

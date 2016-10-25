@@ -173,10 +173,16 @@ namespace debugScore4
         }
         /// <summary>
         /// all the methods i need for calculating the score of each state
+        /// this is the try hard part of the asingment 
         /// </summary>
         public void heuristic()
         {
-            
+            this.score += rowScore() + colScore() + mainDScore() +secondaryDScore();
+            Console.WriteLine("row :"+ rowScore());
+            Console.WriteLine("column :"+colScore());
+            Console.WriteLine("main diagonal:"+mainDScore());
+            Console.WriteLine("secondary diagonal:"+secondaryDScore());
+            Console.WriteLine(this.score);
         }
         public int rowScore()
         {
@@ -184,26 +190,40 @@ namespace debugScore4
             int sum = 0; 
             for (int i = 0; i < ROWS_NUM; i++)
             {
+                horizontalCount = 1;
                 for (int j = 0; j < COLS_NUM - 1; j++)
                 {
                     if (Cells[i, j] == Cells[i, j + 1])
                     {
                         horizontalCount++;
-                        if (horizontalCount == 3)
-                            score += 10;
-                        else if (horizontalCount == 4)
-                            score += 90;    
+                        if (horizontalCount == 3)//if 3 in a row 
+                        {
+                            if (Cells[i, j + 1] == 1)//player 2 = min 
+                                sum += 10;
+                            else if (Cells[i, j + 1] == 2)//player 2 = min 
+                                sum -= 10;
+                        }
+                        else if (horizontalCount == 4)//if 4 in a row 
+                        {
+                            if (Cells[i, j + 1] == 1)
+                                sum += 90;
+                            else if (Cells[i, j + 1] == 2)
+                                sum -= 90;
+                        }
                     }
                     else
                         horizontalCount = 1;
                 }
             }
-        }
+            return sum; 
+        }//it works
         public int colScore()
         {
+            int sum = 0;
             int verticalCount = 1;
             for (int j = 0; j < COLS_NUM; j++)
             {
+                verticalCount = 1;
                 for (int i = 0; i < ROWS_NUM - 1; i++)
                 {
                     if (Cells[i, j] == 0)
@@ -214,23 +234,184 @@ namespace debugScore4
                     {
                         verticalCount++;
                         if (verticalCount == 3)
-                            score += 10;
+                        {
+                            if (Cells[i + 1, j] == 1)//player 1 = max 
+                                sum += 10;
+                            else if (Cells[i + 1, j] == 2)//player 2 = min 
+                                sum -= 10;
+                        }
+                           
                         else if (verticalCount == 4)
-                            score += 90;
+                        {
+                            if (Cells[i + 1, j] == 1)//player 1 = max 
+                                sum += 90;
+                            else if (Cells[i + 1, j] == 2)//player 2 = min 
+                                sum -= 90;
+                        }
+                            
                     }
                     else
                         verticalCount = 1;
                 }
             }
-        }
+            return sum; 
+        }//it works
         public int mainDScore()
         {
-            return 0; 
-        }
+            //Main diagonal
+            int mainDiagonalCount = 1;
+            int sum = 0;
+            int[,] starters = new int[8, 2];
+            starters[0, 0] = 3; starters[0, 1] = 0;
+            starters[1, 0] = 2; starters[1, 1] = 0;
+            starters[2, 0] = 1; starters[2, 1] = 0;
+            starters[3, 0] = 0; starters[3, 1] = 0;
+            starters[4, 0] = 0; starters[4, 1] = 1;
+            starters[5, 0] = 0; starters[5, 1] = 2;
+            starters[6, 0] = 0; starters[6, 1] = 3;
+            starters[7, 0] = 0; starters[7, 1] = 4;
+            int i, j;
+            for (int k = 0; k < 8; k++)
+            {
+                i = starters[k, 0]; j = starters[k, 1];
+                mainDiagonalCount = 1;
+                do
+                {
+                    if (Cells[i, j] != 0)   //we only care for non-zero cells
+                    {
+                        if (Cells[i, j] == Cells[i + 1, j + 1])
+                        {
+                            mainDiagonalCount++;
+                            //set sum
+                            if (mainDiagonalCount == 3)
+                            {
+                                if (Cells[i + 1, j + 1] == 1)//player 1 = max 
+                                    sum += 10;
+                                else if (Cells[i + 1, j + 1] == 2)//player 2 = min 
+                                    sum -= 10;
+                            }
+                            else if (mainDiagonalCount == 4)
+                            {
+                                if (Cells[i + 1, j + 1] == 1)//player 1 = max 
+                                    sum += 90;
+                                else if (Cells[i + 1, j + 1] == 2)//player 2 = min 
+                                    sum -= 90;
+                            }
+                        }
+                    }
+                    i++; j++;
+                    if (i == 5 || j == 6)
+                        break;
+                } while (true);
+            }
+            return sum;
+        }//it works
+        public int mainDScoreV2()
+        {
+            //Main diagonal
+            int mainDiagonalCount = 1;
+            int sum = 0;
+            int i = 3, j = 0;   //start from Cell[3, 0] : first main diagonal with 3 elements
+            while (i != 2 || j != COLS_NUM - 1)      //stop at Cell[2, 6] :  last main diagonal with 3 elements
+            {
+
+                if (rachedDiagonalsEnd(i, j))
+                {
+                    //reset i, j  to diagonal's beginning
+                    int i_prev = i;
+                    i = (i - j > 0) ? i - j : 0;
+                    j = (j - i_prev > 0) ? j - i_prev : 0;
+                    //Console.WriteLine("Back to " + i +  "," + j);
+                    if (i == 0)  //if at first row...
+                    {
+                        j++;    //next diagonal begins at the right of the current cell
+                    }
+                    else
+                    {   //when at first col...
+                        i--;    //next diagonal begins on top of the current cell
+                    }
+                    mainDiagonalCount = 1;
+                    continue;
+                }
+                if (Cells[i, j] != 0)   //we only care for non-zero cells
+                {
+                    if (Cells[i, j] == Cells[i + 1, j + 1])
+                    {
+
+                        mainDiagonalCount++;
+                        //set sum
+                        if (mainDiagonalCount == 3)
+                        {
+                            if (Cells[i + 1, j + 1] == 1)//player 1 = max 
+                                sum += 10;
+                            else if (Cells[i + 1, j + 1] == 2)//player 2 = min 
+                                sum -= 10;
+                        }
+                        else if (mainDiagonalCount == 4)
+                        {
+                            if (Cells[i + 1, j + 1] == 1)//player 1 = max 
+                                sum += 90;
+                            else if (Cells[i + 1, j + 1] == 2)//player 2 = min 
+                                sum -= 90;
+
+                        }
+
+                    }
+                }
+                i++; j++;
+            }
+            return sum;
+        }//more more complex but clever 
         public int secondaryDScore()
         {
-            return 0; 
-        }
+            //Secondry diagonal
+            int secondaryDiagonalCount = 1;
+            int sum = 0;
+            int[,] starters = new int[8, 2];
+            starters[0, 0] = 2; starters[0, 1] = 0;
+            starters[1, 0] = 3; starters[1, 1] = 0;
+            starters[2, 0] = 4; starters[2, 1] = 0;
+            starters[3, 0] = 5; starters[3, 1] = 0;
+            starters[4, 0] = 5; starters[4, 1] = 1;
+            starters[5, 0] = 5; starters[5, 1] = 2;
+            starters[6, 0] = 5; starters[6, 1] = 3;
+            starters[7, 0] = 5; starters[7, 1] = 4;
+            int i, j;
+            for (int k = 0; k < 8; k++)
+            {
+                i = starters[k, 0]; j = starters[k, 1];
+                secondaryDiagonalCount = 1;
+                do
+                {
+                    if (Cells[i, j] != 0)   //we only care for non-zero cells
+                    {
+                        if (Cells[i, j] == Cells[i - 1, j + 1])
+                        {
+                            secondaryDiagonalCount++;
+                            //set sum
+                            if (secondaryDiagonalCount == 3)
+                            {
+                                if (Cells[i - 1, j + 1] == 1)//player 1 = max 
+                                    sum += 10;
+                                else if (Cells[i - 1, j + 1] == 2)//player 2 = min 
+                                    sum -= 10;
+                            }
+                            else if (secondaryDiagonalCount == 4)
+                            {
+                                if (Cells[i - 1, j + 1] == 1)//player 1 = max 
+                                    sum += 90;
+                                else if (Cells[i - 1, j + 1] == 2)//player 2 = min 
+                                    sum -= 90;
+                            }
+                        }
+                    }
+                    i--; j++;
+                    if (i == 0 || j == 6)
+                        break;
+                } while (true);
+            }
+            return sum;
+        }//it works
         //
         public List<State> GetChildren()
         {
