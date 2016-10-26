@@ -362,6 +362,10 @@ namespace debugScore4
             }
             return sum;
         }//more more complex but clever 
+        public bool rachedDiagonalsEnd(int i, int j)
+        {
+            return (i == ROWS_NUM - 1) || (j == COLS_NUM - 1);
+        }
         public int secondaryDScore()
         {
             //Secondry diagonal
