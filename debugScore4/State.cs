@@ -16,8 +16,8 @@ namespace debugScore4
         private int lastRowPlayed; //used for smart checking in isTerminal function
         private const int ROWS_NUM = 6;
         private const int COLS_NUM = 7;
-        private const int PLAYER_RED = 1;
-        private const int PLAYER_YELLOW = 2;
+        public const int PLAYER_RED = 1;
+        public const int PLAYER_YELLOW = 2;
         //
         public State ( int player ) //standard initialization; choose only who plays first
         {
@@ -75,12 +75,11 @@ namespace debugScore4
             }
             return pushDone;
         }
-        //Access Modifiers; Setters and Getters
+        //Access Modifiers
         public int getPlayer ()
         {
             return player;
         } 
-        //
         public void setPlayer(int player)
         {
             this.player = player;
@@ -178,11 +177,11 @@ namespace debugScore4
         public void heuristic()
         {
             this.score += rowScore() + colScore() + mainDScore() +secondaryDScore();
-            Console.WriteLine("row :"+ rowScore());
-            Console.WriteLine("column :"+colScore());
-            Console.WriteLine("main diagonal:"+mainDScore());
-            Console.WriteLine("secondary diagonal:"+secondaryDScore());
-            Console.WriteLine(this.score);
+            //Console.WriteLine("row :"+ rowScore());
+            //Console.WriteLine("column :"+colScore());
+            //Console.WriteLine("main diagonal:"+mainDScore());
+            //Console.WriteLine("secondary diagonal:"+secondaryDScore());
+            //Console.WriteLine(this.score);
         }
         public int rowScore()
         {
@@ -417,7 +416,7 @@ namespace debugScore4
             return sum;
         }//it works
         //
-        public List<State> GetChildren()
+        public List<State> getChildren()
         {
             int nextPlayer;
             List<State> children = new List<State>();
@@ -481,38 +480,6 @@ namespace debugScore4
             Console.WriteLine("**************************");
             Console.WriteLine("");
         }
-        //
-        public override bool Equals(object obj)
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                for (int j = 0; j < 7; j++)
-                {
-                    if (this.Cells[i, j] != ((State)obj).Cells[i, j])
-                        return false;
-                }
-            }
-            return true; 
-        }
-        //  
-        public override int GetHashCode()
-        {
-            // Which is preferred?
-
-            return base.GetHashCode();
-
-            //return this.FooId.GetHashCode();
-        }
-        //@Override
-        //public int hashCode()
-        //{
-        //    return this.emptyTileRow + this.emptyTileColumn + this.dimension;
-        //}
-        //@Override
-        ////We override the compareTo function of this class so only the heuristic scores are compared
-        //public int compareTo(State s)
-        //{
-        //    return Double.compare(this.score, s.score);
-        //}
+        
     }
 }
