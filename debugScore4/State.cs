@@ -14,6 +14,7 @@ namespace debugScore4
         private int score;
         private int lastColPlayed; //used for smart checking in isTerminal function
         private int lastRowPlayed; //used for smart checking in isTerminal function
+        private Move lastMove;//tha skasei 
         private const int ROWS_NUM = 6;
         private const int COLS_NUM = 7;
         public const int PLAYER_RED = 1;
@@ -22,8 +23,10 @@ namespace debugScore4
         public State ( int player ) //standard initialization; choose only who plays first
         {
             this.score = 0;
-            this.lastColPlayed = -1; 
+            this.lastColPlayed = 0; 
             this.player = player;
+            //
+            lastMove = new Move();
             //
             this.Cells = new int[ROWS_NUM, COLS_NUM];
             this.CellsNames = new string[ROWS_NUM, COLS_NUM];
@@ -37,7 +40,28 @@ namespace debugScore4
             }
         }
         //
-        public State( int[,] Cells , int player )
+        public State(State state)  // copy ctor 
+        {
+            this.score = state.score;
+            this.player = state.player;
+            this.lastColPlayed = state.lastColPlayed;
+            this.lastRowPlayed = state.lastRowPlayed;
+            this.Cells = new int[ROWS_NUM, COLS_NUM];
+            this.CellsNames = new string[ROWS_NUM, COLS_NUM];
+            //
+            lastMove = state.lastMove;
+            //
+            for (int i = 0; i < ROWS_NUM; i++)//row
+            {
+                for (int j = 0; j < COLS_NUM; j++)//col
+                {
+                    CellsNames[i, j] = "c" + i + j;
+                    this.Cells[i, j] = state.Cells[i, j];
+                }
+            }
+        }
+        //
+        public State( int[,] Cells , int player ) // ctor MONO GIA THN GET CHILDREN
         {
             this.score = 0;
             this.player = player;
@@ -52,28 +76,7 @@ namespace debugScore4
                     this.Cells[i, j] = Cells[i, j];
                 }
             }
-        }
-        //
-        //inserts the token at the given column; iterates bottom-up to avoid unnecessary checks
-        public bool push(int col, int test)
-        {
-            bool pushDone = false;
-            if (Cells[0, col] != 0)
-            {
-                pushDone = false;
-            }
-            lastColPlayed = col;
-            for (int i = ROWS_NUM-1; i > 0; i--)
-            {
-                if (Cells[i, col] == 0)
-                {
-                    Cells[i, col] = test;
-                    lastRowPlayed = i;
-                    pushDone = true;
-                    break;
-                }
-            }
-            return pushDone;
+            this.heuristic();
         }
         //Access Modifiers
         public int getPlayer ()
@@ -83,6 +86,10 @@ namespace debugScore4
         public void setPlayer(int player)
         {
             this.player = player;
+        }
+        public Move getLastMove()
+        {
+            return lastMove;
         }
         //
         public bool isTerminal()
@@ -174,14 +181,15 @@ namespace debugScore4
         /// all the methods i need for calculating the score of each state
         /// this is the try hard part of the asingment 
         /// </summary>
-        public void heuristic()
+        public int heuristic()
         {
             this.score += rowScore() + colScore() + mainDScore() +secondaryDScore();
-            //Console.WriteLine("row :"+ rowScore());
-            //Console.WriteLine("column :"+colScore());
-            //Console.WriteLine("main diagonal:"+mainDScore());
-            //Console.WriteLine("secondary diagonal:"+secondaryDScore());
+            //Console.WriteLine("row :" + rowScore());
+            //Console.WriteLine("column :" + colScore());
+            //Console.WriteLine("main diagonal:" + mainDScore());
+            //Console.WriteLine("secondary diagonal:" + secondaryDScore());
             //Console.WriteLine(this.score);
+            return this.score;
         }
         public int rowScore()
         {
@@ -215,7 +223,7 @@ namespace debugScore4
                 }
             }
             return sum; 
-        }//it works
+        }
         public int colScore()
         {
             int sum = 0;
@@ -254,7 +262,7 @@ namespace debugScore4
                 }
             }
             return sum; 
-        }//it works
+        }
         public int mainDScore()
         {
             //Main diagonal
@@ -304,7 +312,7 @@ namespace debugScore4
                 } while (true);
             }
             return sum;
-        }//it works
+        }
         public int mainDScoreV2()
         {
             //Main diagonal
@@ -360,7 +368,7 @@ namespace debugScore4
                 i++; j++;
             }
             return sum;
-        }//more more complex but clever 
+        } 
         public bool rachedDiagonalsEnd(int i, int j)
         {
             return (i == ROWS_NUM - 1) || (j == COLS_NUM - 1);
@@ -414,8 +422,38 @@ namespace debugScore4
                 } while (true);
             }
             return sum;
-        }//it works
+        }
         //
+        //
+        public void makeMove(int row, int col, int player)
+        {
+            push(col, player);
+            lastMove = new Move(row, col);
+            this.lastColPlayed = col;
+            this.lastRowPlayed = row;
+            this.player = player;
+        }
+        public bool push(int col, int nextPlayer)
+        {
+            bool pushDone = false;
+            if (Cells[0, col] != 0)
+            {
+                pushDone = false;
+            }
+            lastColPlayed = col;
+            for (int i = ROWS_NUM - 1; i > 0; i--)
+            {
+                if (Cells[i, col] == 0)
+                {
+                    Cells[i, col] = nextPlayer;
+                    lastRowPlayed = i;
+                    pushDone = true;
+                    this.lastMove = new Move(lastRowPlayed, lastColPlayed);  
+                    break;
+                }
+            }
+            return pushDone;
+        }
         public List<State> getChildren()
         {
             int nextPlayer;

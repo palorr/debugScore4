@@ -35,7 +35,7 @@ namespace debugScore4
                 return min(new State(state), 0);
             }
         }
-
+        //
         public Move max(State state, int depth)
         {
             Random r = new Random();
@@ -45,7 +45,7 @@ namespace debugScore4
              */
             if ((state.isTerminal()) || (depth == maxDepth))
             {
-                Move lastMove = new Move(state.getLastMove().getRow(), state.getLastMove().getCol(), state.evaluate());
+                Move lastMove = new Move(state.getLastMove().getRow(), state.getLastMove().getCol(), state.heuristic());
                 return lastMove;
             }
             //The children-moves of the state are calculated
@@ -76,7 +76,41 @@ namespace debugScore4
             }
             return maxMove;
         }
+        public Move min(State state, int depth)
+        {
+            Random r = new Random();
 
+            if ((state.isTerminal()) || (depth == maxDepth))
+            {
+                Move lastMove = new Move(state.getLastMove().getRow(), state.getLastMove().getCol(), state.heuristic());
+                return lastMove;
+            }
+            List<State> children = new List<State>(state.getChildren());
+            Move minMove = new Move(Int32.MaxValue);
+            foreach (State child in children)
+            {
+                Move move = max(child, depth + 1);
+                if (move.getValue() <= minMove.getValue())
+                {
+                    if ((move.getValue() == minMove.getValue()))
+                    {
+                        if (r.Next(2) == 0)
+                        {
+                            minMove.setRow(child.getLastMove().getRow());
+                            minMove.setCol(child.getLastMove().getCol());
+                            minMove.setValue(move.getValue());
+                        }
+                    }
+                    else
+                    {
+                        minMove.setRow(child.getLastMove().getRow());
+                        minMove.setCol(child.getLastMove().getCol());
+                        minMove.setValue(move.getValue());
+                    }
+                }
+            }
+            return minMove;
+        }
 
 
     }

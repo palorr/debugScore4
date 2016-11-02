@@ -9,6 +9,7 @@ namespace debugScore4
     class Move
     {
         private int col;
+        private int row;
         private int value;
 
         public Move()
@@ -20,6 +21,7 @@ namespace debugScore4
         public Move(int row, int col)
         {
             this.col = col;
+            this.row = row;
             this.value = -1;
         }
 
@@ -32,7 +34,13 @@ namespace debugScore4
         public Move(int row, int col, int value)
         {
             this.col = col;
+            this.row = row;
             this.value = value;
+        }
+
+        public int getRow()
+        {
+            return row;
         }
 
         public int getCol()
@@ -43,6 +51,11 @@ namespace debugScore4
         public int getValue()
         {
             return value;
+        }
+
+        public void setRow(int row)
+        {
+            this.row = row;
         }
 
         public void setCol(int col)
