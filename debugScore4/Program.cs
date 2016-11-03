@@ -10,80 +10,39 @@ namespace debugScore4
     {
         static void Main(string[] args)
         {
-            State s = new State(1);
+            State s = new State();
+            Player red = new Player(4, 1);
+            Player yellow = new Player(4, 2);
             s.toGraph();
-            s.push(0, 1);
-            s.toGraph();
-            s.push(1, 2);
-            s.toGraph();
-            s.push(1, 1);
-            s.toGraph();
-            s.push(1, 2);
-            s.toGraph();
-            s.push(0, 1);
-            s.toGraph();
-            s.push(2, 2);
-            s.toGraph();
-            s.push(0, 1);
-            s.toGraph();
-            s.push(0, 1);
-            s.toGraph();
-            s.push(2, 2);
-            s.toGraph();
-            s.push(2, 2);
-            s.toGraph();
-            s.push(3, 2);
-            s.toGraph();
-            s.push(1, 1);
-            s.toGraph();
-            s.push(2, 1);
-            s.toGraph();
-            s.push(4, 2);
-            s.toGraph();
-            s.push(3, 1);
-            s.toGraph();
-            s.push(3, 2);
-            s.toGraph();
-            s.push(4, 1);
-            s.toGraph();
-            s.push(4, 1);
-            s.toGraph();
-            s.push(4, 2);
-            s.toGraph();
-            s.heuristic();
-            
+            Console.WriteLine(s.isTerminal());
+            while (!s.isTerminal())
+            {
+                switch (s.getPlayer())
+                {
+                    case 1:
+                        Console.WriteLine("red moves");
+                        Move redMove = red.MiniMax(s);
+                        s.push(redMove.getCol());
+                        break;
+                    case 2:
+                        Console.WriteLine("yellow moves");
+                        Move yellowMove = yellow.MiniMax(s);
+                        s.push(yellowMove.getCol());
+                        break;
 
-            //s.push(2, 1);
-            //s.toGraph();
-            //s.push(3, 2);
-            //s.toGraph();
-            //s.push(3, 2);
-            //s.toGraph();
-            //s.push(3, 2);
-            //s.toGraph();
-            //s.push(3, 1);
-            //s.toGraph();
-            //s.push(4, 2);
-            //s.toGraph();
-            //s.push(4, 1);
-            //s.toGraph();
-            //s.push(4, 1);
-            //s.toGraph();
-            //s.push(5, 1);
-            //s.toGraph();
-            //s.push(5, 1);
-            //s.toGraph();
-            //s.push(5, 1);
-            //s.toGraph();
-            //s.push(5, 2);
-            //Console.WriteLine(s.isTerminal());
-
-            //s.toGraph();
-            //s.push(6, 1);
-            //Console.WriteLine(s.isTerminal());
-            //s.toGraph();
-            //
+                    default:
+                        break;
+                }
+                Console.WriteLine(s.isTerminal());
+                s.toGraph();
+                
+            }
+            Console.WriteLine("this is the terminal state");
+            Console.WriteLine(s.isTerminal());
+            s.toGraph();
             Console.Read();
+
+
         }
     }
 }
