@@ -93,7 +93,7 @@ namespace debugScore4
         public void heuristic()//creates a sum of our score
         {
             this.score = 0; 
-            this.score += rowScore() + colScore() + mainDScore() +secondaryDScore();
+            this.score += rowScore() + colScore() + mainDScore() +secondaryDScore() +center();
             //Console.WriteLine("row :" + rowScore());
             //Console.WriteLine("column :" + colScore());
             //Console.WriteLine("main diagonal:" + mainDScore());
@@ -305,6 +305,20 @@ namespace debugScore4
                 } while (true);
             }
             return sum;
+        }
+        public int center()//gives an extra point to moves in the central col 
+        {
+            int sum = 0;
+            for (int i = ROWS_NUM-1; i <= 0; i--)
+            {
+                if (Cells[i, 3] == 0)
+                    break;
+                else if (Cells[i, 3] == 1)
+                    sum+=1;
+                else if (Cells[i, 3] == 2)
+                    sum-=1;
+            }
+            return sum; 
         }
         //the methods i need for children
         public bool push(int col)

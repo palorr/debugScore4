@@ -23,23 +23,19 @@ namespace debugScore4
                         Console.WriteLine("red moves");
                         Move redMove = red.MiniMax(s);
                         s.push(redMove.getCol());
+                        s.toGraph();
                         break;
                     case 2:
                         Console.WriteLine("yellow moves");
                         Move yellowMove = yellow.MiniMax(s);
                         s.push(yellowMove.getCol());
+                        s.toGraph(); 
                         break;
 
                     default:
                         break;
                 }
-                Console.WriteLine(s.isTerminal());
-                s.toGraph();
-                
             }
-            Console.WriteLine("this is the terminal state");
-            Console.WriteLine(s.isTerminal());
-            s.toGraph();
             Console.Read();
 
 
